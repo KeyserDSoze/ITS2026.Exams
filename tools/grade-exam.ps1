@@ -2,7 +2,8 @@ param(
     [string]$SearchRoot = 'C:\',
     [string]$ExamId,
     [switch]$DiscoveryOnly,
-    [switch]$Json
+    [switch]$Json,
+    [string]$ReportDirectory = (Join-Path $PSScriptRoot 'RISULTATI')
 )
 
 $ErrorActionPreference = 'Stop'
@@ -11,6 +12,39 @@ $repoRoot = Split-Path -Parent $PSScriptRoot
 function Find-Markers([string]$Root) {
     if (-not (Test-Path $Root)) { return @() }
     return @(Get-ChildItem -Path $Root -Filter '.exam-id' -File -Recurse -Force -ErrorAction SilentlyContinue)
+}
+
+function ConvertTo-HtmlEncoded([object]$Value) {
+    return [System.Net.WebUtility]::HtmlEncode([string]$Value)
+}
+
+function Write-HtmlReport([object]$Result, [string]$Path) {
+    $rows = foreach ($check in @($Result.technicalChecks)) {
+        $status = if ($check.passed) { 'PASS' } else { 'FAIL' }
+        "<tr><td>$(ConvertTo-HtmlEncoded $check.name)</td><td>$status</td><td>$($check.points)</td></tr>"
+    }
+    $html = @"
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<title>Risultato $($Result.examId)</title>
+<style>
+body{font-family:Arial,sans-serif;max-width:900px;margin:40px auto;padding:0 20px}h1{margin-bottom:8px}.score{font-size:1.4rem;font-weight:700;margin:20px 0}table{border-collapse:collapse;width:100%}th,td{border:1px solid #ccc;padding:8px;text-align:left}th{background:#f3f3f3}.meta{color:#555}
+</style>
+</head>
+<body>
+<h1>Risultato esame $(ConvertTo-HtmlEncoded $Result.examId)</h1>
+<p class="meta">Percorso: $(ConvertTo-HtmlEncoded $Result.examRoot)</p>
+<div class="score">Tecnico: $($Result.technicalScore)/20 &nbsp; | &nbsp; Domande: $($Result.questionsScore)/10 &nbsp; | &nbsp; Totale: $($Result.total)/30</div>
+<h2>Dettaglio controlli tecnici</h2>
+<table><thead><tr><th>Controllo</th><th>Esito</th><th>Punti</th></tr></thead><tbody>
+$($rows -join "`n")
+</tbody></table>
+</body>
+</html>
+"@
+    Set-Content -Path $Path -Value $html -Encoding UTF8
 }
 
 Write-Host "Ricerca marker .exam-id in $SearchRoot ..."
@@ -77,11 +111,12 @@ $result = [pscustomobject]@{
     technicalChecks=$technical.checks
 }
 
-$outDir = Join-Path $PSScriptRoot 'RISULTATI'
-New-Item -ItemType Directory -Force -Path $outDir | Out-Null
+New-Item -ItemType Directory -Force -Path $ReportDirectory | Out-Null
 $stamp = Get-Date -Format 'yyyyMMdd-HHmmss'
-$outFile = Join-Path $outDir "RISULTATO-$id-$stamp.json"
-$result | ConvertTo-Json -Depth 6 | Set-Content -Encoding UTF8 $outFile
+$jsonFile = Join-Path $ReportDirectory "RISULTATO-$id-$stamp.json"
+$htmlFile = Join-Path $ReportDirectory "RISULTATO-$id-$stamp.html"
+$result | ConvertTo-Json -Depth 6 | Set-Content -Encoding UTF8 $jsonFile
+Write-HtmlReport -Result $result -Path $htmlFile
 
 if ($Json) { $result | ConvertTo-Json -Depth 6 -Compress }
 else {
@@ -89,5 +124,6 @@ else {
     Write-Host "Tecnico: $($result.technicalScore)/20"
     Write-Host "Domande: $($result.questionsScore)/10"
     Write-Host "TOTALE: $($result.total)/30"
-    Write-Host "Report: $outFile"
+    Write-Host "Report JSON: $jsonFile"
+    Write-Host "Report HTML: $htmlFile"
 }
