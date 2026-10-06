@@ -1,0 +1,67 @@
+name: exam-framework-ci
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  common:
+    name: Common / discovery / questions
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Parse all PowerShell files
+        shell: pwsh
+        run: |
+          $failed = $false
+          Get-ChildItem -Recurse -Filter *.ps1 | ForEach-Object {
+            $tokens = $null
+            $errors = $null
+            [System.Management.Automation.Language.Parser]::ParseFile($_.FullName, [ref]$tokens, [ref]$errors) | Out-Null
+            if ($errors.Count -gt 0) {
+              $failed = $true
+              Write-Host "Parse errors in $($_.FullName)"
+              $errors | ForEach-Object { Write-Host $_.Message }
+            }
+          }
+          if ($failed) { throw 'PowerShell parse errors found.' }
+      - name: Test discovery and question scoring
+        shell: pwsh
+        run: ./tests/test-common.ps1
+
+  development:
+    name: Development reference case
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Run behavioral DEV grader tests
+        shell: pwsh
+        run: ./src/dev/sample/tests/test-dev-grader.ps1
+
+  infrastructure-simulated:
+    name: Infrastructure scoring fixtures
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run INFRA simulated grader tests
+        shell: pwsh
+        run: ./src/infra/sample/tests/test-infra-grader.ps1
+
+  infrastructure-real:
+    name: Infrastructure real IIS integration
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply reference Windows/IIS configuration
+        shell: pwsh
+        run: ./src/infra/sample/solution/Apply-Solution.ps1
+      - name: Grade real Windows/IIS state
+        shell: pwsh
+        run: |
+          $json = (& ./src/infra/sample/grader/grade-infra.ps1 -ExamRoot ./src/infra/sample/candidate -Json | Select-Object -Last 1)
+          $result = $json | ConvertFrom-Json
+          Write-Host $json
+          if ($result.score -ne 20) { throw "Real INFRA reference solution must score 20/20, got $($result.score)." }
