@@ -6,7 +6,7 @@ on:
 
 jobs:
   common:
-    name: Common / discovery / questions
+    name: Common / discovery / questions / private extension
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
@@ -28,6 +28,9 @@ jobs:
       - name: Test discovery and question scoring
         shell: pwsh
         run: ./tests/test-common.ps1
+      - name: Test private grader extension contract
+        shell: pwsh
+        run: ./tests/test-private-extension.ps1
 
   development:
     name: Development reference case
