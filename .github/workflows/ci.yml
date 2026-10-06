@@ -87,7 +87,7 @@ jobs:
       - name: Build ZIP packages
         shell: powershell
         run: ./tools/build-packages.ps1
-      - name: Verify generated ZIPs
+      - name: Verify generated ZIPs and required files
         shell: powershell
         run: |
           $expected = @('DEV-SAMPLE-CANDIDATO.zip','INFRA-SAMPLE-CANDIDATO.zip','USB-CORRETTORE.zip')
@@ -96,6 +96,24 @@ jobs:
             if (-not (Test-Path $path)) { throw "Missing package: $name" }
             if ((Get-Item $path).Length -le 0) { throw "Empty package: $name" }
           }
+
+          $verifyRoot = Join-Path $env:RUNNER_TEMP 'exam-package-verification'
+          Remove-Item -Recurse -Force $verifyRoot -ErrorAction SilentlyContinue
+          New-Item -ItemType Directory -Force -Path $verifyRoot | Out-Null
+
+          $dev = Join-Path $verifyRoot 'dev'
+          $infra = Join-Path $verifyRoot 'infra'
+          $usb = Join-Path $verifyRoot 'usb'
+          Expand-Archive dist/DEV-SAMPLE-CANDIDATO.zip $dev
+          Expand-Archive dist/INFRA-SAMPLE-CANDIDATO.zip $infra
+          Expand-Archive dist/USB-CORRETTORE.zip $usb
+
+          if (-not (Test-Path (Join-Path $dev '.exam-id'))) { throw 'DEV package lost .exam-id marker.' }
+          if (-not (Test-Path (Join-Path $infra '.exam-id'))) { throw 'INFRA package lost .exam-id marker.' }
+          if (-not (Test-Path (Join-Path $usb 'tools/CORREZIONE.cmd'))) { throw 'USB package missing CORREZIONE.cmd.' }
+          if (-not (Test-Path (Join-Path $usb 'tools/grade-exam.ps1'))) { throw 'USB package missing grade-exam.ps1.' }
+          if (-not (Test-Path (Join-Path $usb 'src/dev/sample/grader/grade-dev.ps1'))) { throw 'USB package missing DEV grader.' }
+          if (-not (Test-Path (Join-Path $usb 'src/infra/sample/grader/grade-infra.ps1'))) { throw 'USB package missing INFRA grader.' }
       - uses: actions/upload-artifact@v4
         with:
           name: exam-reference-packages
