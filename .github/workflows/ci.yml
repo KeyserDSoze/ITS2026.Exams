@@ -6,7 +6,7 @@ on:
 
 jobs:
   common:
-    name: Common / discovery / questions / private extension
+    name: Common / public boundary / private extension
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
@@ -25,6 +25,9 @@ jobs:
             }
           }
           if ($failed) { throw 'PowerShell parse errors found.' }
+      - name: Enforce public repository boundary
+        shell: pwsh
+        run: ./tests/test-public-boundary.ps1
       - name: Test discovery and question scoring
         shell: pwsh
         run: ./tests/test-common.ps1
