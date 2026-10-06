@@ -1,0 +1,4 @@
+dist/
+**/RISULTATI/
+*.zip
+*.log
