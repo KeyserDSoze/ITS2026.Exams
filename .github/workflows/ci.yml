@@ -56,12 +56,48 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Apply reference Windows/IIS configuration
-        shell: pwsh
+        shell: powershell
         run: ./src/infra/sample/solution/Apply-Solution.ps1
       - name: Grade real Windows/IIS state
-        shell: pwsh
+        shell: powershell
         run: |
           $json = (& ./src/infra/sample/grader/grade-infra.ps1 -ExamRoot ./src/infra/sample/candidate -Json | Select-Object -Last 1)
           $result = $json | ConvertFrom-Json
           Write-Host $json
           if ($result.score -ne 20) { throw "Real INFRA reference solution must score 20/20, got $($result.score)." }
+
+  usb-e2e:
+    name: USB corrector end-to-end
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Execute the real CORREZIONE.cmd against a random C drive project
+        shell: powershell
+        run: ./tests/test-usb-e2e.ps1
+
+  packages:
+    name: Build distributable packages
+    runs-on: windows-latest
+    needs: [common, development, infrastructure-simulated, infrastructure-real, usb-e2e]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build ZIP packages
+        shell: powershell
+        run: ./tools/build-packages.ps1
+      - name: Verify generated ZIPs
+        shell: powershell
+        run: |
+          $expected = @('DEV-SAMPLE-CANDIDATO.zip','INFRA-SAMPLE-CANDIDATO.zip','USB-CORRETTORE.zip')
+          foreach ($name in $expected) {
+            $path = Join-Path 'dist' $name
+            if (-not (Test-Path $path)) { throw "Missing package: $name" }
+            if ((Get-Item $path).Length -le 0) { throw "Empty package: $name" }
+          }
+      - uses: actions/upload-artifact@v4
+        with:
+          name: exam-reference-packages
+          path: dist/*.zip
+          if-no-files-found: error
