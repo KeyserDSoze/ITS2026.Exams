@@ -75,7 +75,8 @@ try {
     $jsOk = $false
     if (Test-Path $jsPath) {
         $js = Get-Content -Raw $jsPath
-        $jsOk = ($js -match 'fetch\s*\(') -and ($js -match '/api/items') -and ($js -match "method\s*:\s*['\"]POST")
+        $postPattern = 'method\s*:\s*[''\"]POST'
+        $jsOk = ($js -match 'fetch\s*\(') -and ($js -match '/api/items') -and ($js -match $postPattern)
     }
     Add-Check 'JavaScript usa GET/POST API' 3 $jsOk
 }
