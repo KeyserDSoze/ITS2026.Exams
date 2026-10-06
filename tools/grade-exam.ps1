@@ -3,11 +3,15 @@ param(
     [string]$ExamId,
     [switch]$DiscoveryOnly,
     [switch]$Json,
-    [string]$ReportDirectory = (Join-Path $PSScriptRoot 'RISULTATI')
+    [string]$ReportDirectory = (Join-Path $PSScriptRoot 'RISULTATI'),
+    [string]$PrivateGraderRoot
 )
 
 $ErrorActionPreference = 'Stop'
 $repoRoot = Split-Path -Parent $PSScriptRoot
+if ([string]::IsNullOrWhiteSpace($PrivateGraderRoot)) {
+    $PrivateGraderRoot = if ($env:ITS_EXAM_PRIVATE_GRADERS) { $env:ITS_EXAM_PRIVATE_GRADERS } else { Join-Path $repoRoot 'private-graders' }
+}
 
 function Find-Markers([string]$Root) {
     if (-not (Test-Path $Root)) { return @() }
@@ -87,14 +91,20 @@ if ($DiscoveryOnly) {
 switch ($id) {
     'DEV-SAMPLE' {
         $grader = Join-Path $repoRoot 'src/dev/sample/grader/grade-dev.ps1'
-        $technical = (& $grader -ExamRoot $root -Json | Select-Object -Last 1) | ConvertFrom-Json
     }
     'INFRA-SAMPLE' {
         $grader = Join-Path $repoRoot 'src/infra/sample/grader/grade-infra.ps1'
-        $technical = (& $grader -ExamRoot $root -Json | Select-Object -Last 1) | ConvertFrom-Json
     }
-    default { throw "Exam ID non supportato: $id" }
+    default {
+        $grader = Join-Path (Join-Path $PrivateGraderRoot $id) 'grade.ps1'
+        if (-not (Test-Path $grader -PathType Leaf)) {
+            throw "Exam ID non supportato dal framework pubblico e grader privato non trovato: $id"
+        }
+    }
 }
+
+$technical = (& $grader -ExamRoot $root -Json | Select-Object -Last 1) | ConvertFrom-Json
+if ([int]$technical.maxScore -ne 20) { throw "Il grader tecnico $id deve avere maxScore=20." }
 
 $questionGrader = Join-Path $PSScriptRoot 'grade-questions.ps1'
 $questions = (& $questionGrader -ExamRoot $root -Json | Select-Object -Last 1) | ConvertFrom-Json
