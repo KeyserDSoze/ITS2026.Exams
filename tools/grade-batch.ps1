@@ -15,9 +15,15 @@ if ($markers.Count -eq 0) { throw "No exam markers found under $SearchRoot" }
 $rows = @()
 foreach ($marker in $markers) {
     $examRoot = Split-Path -Parent $marker.FullName
-    $args = @('-SearchRoot', $examRoot, '-Json', '-ReportDirectory', $OutputDirectory)
-    if (-not [string]::IsNullOrWhiteSpace($PrivateGraderRoot)) { $args += @('-PrivateGraderRoot', $PrivateGraderRoot) }
-    $json = (& $grader @args | Select-Object -Last 1)
+    $invoke = @{
+        SearchRoot = $examRoot
+        Json = $true
+        ReportDirectory = $OutputDirectory
+    }
+    if (-not [string]::IsNullOrWhiteSpace($PrivateGraderRoot)) {
+        $invoke.PrivateGraderRoot = $PrivateGraderRoot
+    }
+    $json = (& $grader @invoke | Select-Object -Last 1)
     $result = $json | ConvertFrom-Json
     $rows += [pscustomobject]@{
         StudentFolder = Split-Path -Leaf $examRoot
