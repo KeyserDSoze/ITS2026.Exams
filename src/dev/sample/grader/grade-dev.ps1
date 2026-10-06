@@ -66,8 +66,8 @@ try {
 
     $indexOk = $false
     try {
-        $home = Invoke-WebRequest -Uri "$baseUrl/index.html" -UseBasicParsing -TimeoutSec 5
-        $indexOk = ($home.StatusCode -eq 200)
+        Invoke-WebRequest -Uri "$baseUrl/index.html" -UseBasicParsing -TimeoutSec 5 | Out-Null
+        $indexOk = $true
     } catch {}
     Add-Check 'Frontend servito' 2 $indexOk
 
