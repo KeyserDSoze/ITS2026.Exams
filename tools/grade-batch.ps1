@@ -1,6 +1,7 @@
 param(
     [string]$SearchRoot = 'C:\',
-    [string]$OutputDirectory = (Join-Path $PSScriptRoot 'RISULTATI')
+    [string]$OutputDirectory = (Join-Path $PSScriptRoot 'RISULTATI'),
+    [string]$PrivateGraderRoot
 )
 
 $ErrorActionPreference = 'Stop'
@@ -14,7 +15,9 @@ if ($markers.Count -eq 0) { throw "No exam markers found under $SearchRoot" }
 $rows = @()
 foreach ($marker in $markers) {
     $examRoot = Split-Path -Parent $marker.FullName
-    $json = (& $grader -SearchRoot $examRoot -Json -ReportDirectory $OutputDirectory | Select-Object -Last 1)
+    $args = @('-SearchRoot', $examRoot, '-Json', '-ReportDirectory', $OutputDirectory)
+    if (-not [string]::IsNullOrWhiteSpace($PrivateGraderRoot)) { $args += @('-PrivateGraderRoot', $PrivateGraderRoot) }
+    $json = (& $grader @args | Select-Object -Last 1)
     $result = $json | ConvertFrom-Json
     $rows += [pscustomobject]@{
         StudentFolder = Split-Path -Leaf $examRoot
