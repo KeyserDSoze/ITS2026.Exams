@@ -1,0 +1,10 @@
+{
+  "siteName": "ExamSite",
+  "physicalPath": "C:\\Exam\\website",
+  "port": 8081,
+  "firewallRule": "Exam HTTP 8081",
+  "localUser": "exam_user",
+  "dataFolder": "C:\\ExamData",
+  "scheduledTask": "ExamHealthCheck",
+  "expectedText": "EXAM SITE - OK"
+}

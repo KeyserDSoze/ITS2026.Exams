@@ -1,0 +1,12 @@
+{
+  "iisInstalled": true,
+  "siteNameOk": true,
+  "pathOk": true,
+  "portOk": true,
+  "siteResponds": true,
+  "firewallOk": true,
+  "userExists": true,
+  "folderExists": true,
+  "modifyPermission": true,
+  "taskExists": true
+}
