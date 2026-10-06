@@ -24,7 +24,9 @@ New-Item -ItemType Directory -Force -Path (Join-Path $usb 'tools') | Out-Null
 New-Item -ItemType Directory -Force -Path (Join-Path $usb 'src/dev/sample/grader') | Out-Null
 New-Item -ItemType Directory -Force -Path (Join-Path $usb 'src/infra/sample/grader') | Out-Null
 
-Get-ChildItem -Path (Join-Path $repoRoot 'tools') -File | Where-Object { $_.Name -ne 'build-packages.ps1' } | Copy-Item -Destination (Join-Path $usb 'tools') -Force
+Get-ChildItem -Path (Join-Path $repoRoot 'tools') -File |
+    Where-Object { $_.Name -notin @('build-packages.ps1','build-private-usb.ps1') } |
+    Copy-Item -Destination (Join-Path $usb 'tools') -Force
 Copy-Item -Path (Join-Path $repoRoot 'src/dev/sample/grader/*') -Destination (Join-Path $usb 'src/dev/sample/grader') -Force
 Copy-Item -Path (Join-Path $repoRoot 'src/infra/sample/grader/*') -Destination (Join-Path $usb 'src/infra/sample/grader') -Force
 New-ZipFromFolder $usb (Join-Path $OutputDirectory 'USB-CORRETTORE.zip')
