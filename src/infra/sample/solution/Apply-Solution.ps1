@@ -1,6 +1,6 @@
 $ErrorActionPreference = 'Stop'
 
-if (-not $IsWindows) { throw 'This reference solution requires Windows.' }
+if ($env:OS -ne 'Windows_NT') { throw 'This reference solution requires Windows.' }
 
 $sampleRoot = Split-Path -Parent (Split-Path -Parent $MyInvocation.MyCommand.Path)
 $candidate = Join-Path $sampleRoot 'candidate'
@@ -11,7 +11,7 @@ if (Get-Command Install-WindowsFeature -ErrorAction SilentlyContinue) {
 } else {
     Enable-WindowsOptionalFeature -Online -FeatureName IIS-WebServerRole -All -NoRestart | Out-Null
 }
-Import-Module WebAdministration
+Import-Module WebAdministration -ErrorAction Stop
 
 New-Item -ItemType Directory -Force -Path $config.physicalPath | Out-Null
 Copy-Item -Path (Join-Path $candidate 'website/*') -Destination $config.physicalPath -Recurse -Force
