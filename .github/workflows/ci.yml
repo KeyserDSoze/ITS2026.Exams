@@ -67,19 +67,19 @@ jobs:
           if ($result.score -ne 20) { throw "Real INFRA reference solution must score 20/20, got $($result.score)." }
 
   usb-e2e:
-    name: USB corrector end-to-end
+    name: USB / reports / batch end-to-end
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.0.x'
-      - name: Execute the real CORREZIONE.cmd against a random C drive project
+      - name: Execute operational tools end-to-end
         shell: powershell
         run: ./tests/test-usb-e2e.ps1
 
   packages:
-    name: Build distributable packages
+    name: Build public reference packages
     runs-on: windows-latest
     needs: [common, development, infrastructure-simulated, infrastructure-real, usb-e2e]
     steps:
@@ -110,12 +110,13 @@ jobs:
 
           if (-not (Test-Path (Join-Path $dev '.exam-id'))) { throw 'DEV package lost .exam-id marker.' }
           if (-not (Test-Path (Join-Path $infra '.exam-id'))) { throw 'INFRA package lost .exam-id marker.' }
-          if (-not (Test-Path (Join-Path $usb 'tools/CORREZIONE.cmd'))) { throw 'USB package missing CORREZIONE.cmd.' }
-          if (-not (Test-Path (Join-Path $usb 'tools/grade-exam.ps1'))) { throw 'USB package missing grade-exam.ps1.' }
+          foreach ($required in @('CORREZIONE.cmd','grade-exam.ps1','grade-questions.ps1','PREPARE-EXAM.ps1','grade-batch.ps1')) {
+            if (-not (Test-Path (Join-Path $usb "tools/$required"))) { throw "USB package missing $required." }
+          }
           if (-not (Test-Path (Join-Path $usb 'src/dev/sample/grader/grade-dev.ps1'))) { throw 'USB package missing DEV grader.' }
           if (-not (Test-Path (Join-Path $usb 'src/infra/sample/grader/grade-infra.ps1'))) { throw 'USB package missing INFRA grader.' }
       - uses: actions/upload-artifact@v4
         with:
-          name: exam-reference-packages
+          name: exam-framework-reference-packages
           path: dist/*.zip
           if-no-files-found: error
