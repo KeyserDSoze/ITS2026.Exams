@@ -31,8 +31,11 @@ if (-not (Get-LocalUser -Name $config.localUser -ErrorAction SilentlyContinue)) 
 
 New-Item -ItemType Directory -Force -Path $config.dataFolder | Out-Null
 & icacls.exe $config.dataFolder /grant "$($config.localUser):(OI)(CI)M" /T /C | Out-Null
+if ($LASTEXITCODE -ne 0) { throw "icacls failed with exit code $LASTEXITCODE" }
 
-$taskCommand = "powershell.exe -NoProfile -Command `"Invoke-WebRequest http://localhost:$($config.port)/ -UseBasicParsing ^| Out-Null`""
-& schtasks.exe /Create /TN $config.scheduledTask /SC DAILY /ST 23:59 /TR $taskCommand /F | Out-Null
+$taskArguments = "-NoProfile -Command `"Invoke-WebRequest 'http://localhost:$($config.port)/' -UseBasicParsing | Out-Null`""
+$taskAction = New-ScheduledTaskAction -Execute 'powershell.exe' -Argument $taskArguments
+$taskTrigger = New-ScheduledTaskTrigger -Daily -At '23:59'
+Register-ScheduledTask -TaskName $config.scheduledTask -Action $taskAction -Trigger $taskTrigger -Force | Out-Null
 
 Write-Host 'Reference infrastructure configuration applied.'
