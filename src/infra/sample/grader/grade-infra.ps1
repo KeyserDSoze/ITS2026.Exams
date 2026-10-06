@@ -10,7 +10,8 @@ if (-not (Test-Path $configPath)) { throw "Missing exam-config.json in $ExamRoot
 $config = Get-Content -Raw $configPath | ConvertFrom-Json
 
 function Get-RealState {
-    if (-not $IsWindows) { throw 'Real infrastructure grading requires Windows.' }
+    $runningOnWindows = ($env:OS -eq 'Windows_NT')
+    if (-not $runningOnWindows) { throw 'Real infrastructure grading requires Windows.' }
 
     $iisInstalled = $false
     if (Get-Command Get-WindowsFeature -ErrorAction SilentlyContinue) {
@@ -25,7 +26,7 @@ function Get-RealState {
     $portOk = $false
     $responds = $false
     if ($iisInstalled) {
-        Import-Module WebAdministration
+        Import-Module WebAdministration -ErrorAction Stop
         $site = Get-Website -Name $config.siteName -ErrorAction SilentlyContinue
         $siteNameOk = $null -ne $site
         if ($site) {
