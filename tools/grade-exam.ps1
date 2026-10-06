@@ -8,13 +8,34 @@ param(
 $ErrorActionPreference = 'Stop'
 $repoRoot = Split-Path -Parent $PSScriptRoot
 
+function Find-Markers([string]$Root) {
+    if (-not (Test-Path $Root)) { return @() }
+    return @(Get-ChildItem -Path $Root -Filter '.exam-id' -File -Recurse -Force -ErrorAction SilentlyContinue)
+}
+
 Write-Host "Ricerca marker .exam-id in $SearchRoot ..."
-$markers = @(Get-ChildItem -Path $SearchRoot -Filter '.exam-id' -File -Recurse -Force -ErrorAction SilentlyContinue)
+$markers = @()
+$normalizedRoot = [System.IO.Path]::GetFullPath($SearchRoot).TrimEnd('\')
+
+if ($normalizedRoot -ieq 'C:') {
+    $fastRoots = @('C:\Exam', 'C:\Users', 'C:\Projects', 'C:\Workspace')
+    foreach ($candidateRoot in $fastRoots) {
+        $markers += Find-Markers $candidateRoot
+    }
+    $markers = @($markers | Sort-Object FullName -Unique)
+    if ($markers.Count -eq 0) {
+        Write-Host 'Nessun marker nei percorsi rapidi: fallback alla scansione completa di C:\ ...'
+        $markers = Find-Markers 'C:\'
+    }
+} else {
+    $markers = Find-Markers $SearchRoot
+}
+
 if ($ExamId) {
     $markers = @($markers | Where-Object { ((Get-Content -Raw $_.FullName).Trim().Split('|')[0]) -eq $ExamId })
 }
 if ($markers.Count -eq 0) { throw 'Nessun esame riconosciuto trovato.' }
-if ($markers.Count -gt 1) { throw "Trovati $($markers.Count) esami. Specificare -ExamId per evitare ambiguita." }
+if ($markers.Count -gt 1) { throw "Trovati $($markers.Count) esami. Specificare -ExamId o rimuovere i duplicati per evitare ambiguita." }
 
 $marker = $markers[0]
 $root = Split-Path -Parent $marker.FullName
