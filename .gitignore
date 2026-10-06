@@ -1,4 +1,6 @@
 dist/
+dist-private/
+private-graders/
 **/RISULTATI/
 *.zip
 *.log
