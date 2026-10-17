@@ -4,7 +4,7 @@ La pipeline deve verificare sia gli esercizi sia i correttori, compreso il fluss
 
 ## Development
 
-Su runner Linux con .NET 8:
+Su runner Linux con .NET 10:
 
 1. compila la soluzione di riferimento;
 2. avvia davvero la Minimal API;
@@ -64,3 +64,6 @@ La pipeline è verde solo se:
 - gli ZIP finali vengono creati con successo.
 
 Prima della giornata d'esame resta comunque obbligatorio uno smoke test sulla VM VirtualBox definitiva.
+## Esercitazioni DEV aggiuntive
+
+La CI prova la soluzione guidata `DEV-BOOKS-SAMPLE` (20/20), i due skeleton incompleti (<20/20), verifica i nuovi pacchetti ZIP e include i loro grader nella chiavetta pubblica. La soluzione della traccia autonoma non viene pubblicata.

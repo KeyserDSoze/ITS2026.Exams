@@ -92,6 +92,12 @@ switch ($id) {
     'DEV-SAMPLE' {
         $grader = Join-Path $repoRoot 'src/dev/sample/grader/grade-dev.ps1'
     }
+    'DEV-BOOKS-SAMPLE' {
+        $grader = Join-Path $repoRoot 'src/dev/practice/books/grader/grade.ps1'
+    }
+    'DEV-TICKETS-SAMPLE' {
+        $grader = Join-Path $repoRoot 'src/dev/practice/tickets/grader/grade.ps1'
+    }
     'INFRA-SAMPLE' {
         $grader = Join-Path $repoRoot 'src/infra/sample/grader/grade-infra.ps1'
     }

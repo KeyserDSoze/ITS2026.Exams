@@ -17,6 +17,10 @@ function New-ZipFromFolder([string]$Source, [string]$ZipPath) {
 # Candidate packages
 New-ZipFromFolder (Join-Path $repoRoot 'src/dev/sample/candidate') (Join-Path $OutputDirectory 'DEV-SAMPLE-CANDIDATO.zip')
 New-ZipFromFolder (Join-Path $repoRoot 'src/infra/sample/candidate') (Join-Path $OutputDirectory 'INFRA-SAMPLE-CANDIDATO.zip')
+foreach ($case in @('books','tickets')) {
+    $id = if ($case -eq 'books') { 'DEV-BOOKS-SAMPLE' } else { 'DEV-TICKETS-SAMPLE' }
+    New-ZipFromFolder (Join-Path $repoRoot "src/dev/practice/$case/candidate") (Join-Path $OutputDirectory "$id-CANDIDATO.zip")
+}
 
 # USB corrector package: preserve the same relative layout expected by grade-exam.ps1.
 $usb = Join-Path $staging 'USB-CORRETTORE'
@@ -29,6 +33,11 @@ Get-ChildItem -Path (Join-Path $repoRoot 'tools') -File |
     Copy-Item -Destination (Join-Path $usb 'tools') -Force
 Copy-Item -Path (Join-Path $repoRoot 'src/dev/sample/grader/*') -Destination (Join-Path $usb 'src/dev/sample/grader') -Force
 Copy-Item -Path (Join-Path $repoRoot 'src/infra/sample/grader/*') -Destination (Join-Path $usb 'src/infra/sample/grader') -Force
+foreach ($case in @('books','tickets')) {
+    $dest=Join-Path $usb "src/dev/practice/$case/grader"
+    New-Item -ItemType Directory -Force -Path $dest | Out-Null
+    Copy-Item -Path (Join-Path $repoRoot "src/dev/practice/$case/grader/*") -Destination $dest -Force
+}
 New-ZipFromFolder $usb (Join-Path $OutputDirectory 'USB-CORRETTORE.zip')
 
 Remove-Item -Recurse -Force $staging

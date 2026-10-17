@@ -1,0 +1,3 @@
+Domanda 1: spiega il flusso dei dati tra form HTML, fetch, Minimal API, lista in memoria e risposta JSON.
+
+RISPOSTA:

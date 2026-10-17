@@ -7,7 +7,7 @@ Questa cartella contiene tutta la documentazione pubblica del framework d'esame.
 Per chi deve fare le lezioni preparatorie:
 
 1. leggere `instructor-preparation.md`;
-2. usare `src/dev/sample/` e `src/infra/sample/` come esercitazioni pubbliche;
+2. usare `src/dev/sample/`, le [esercitazioni .NET 10](../src/dev/practice/README.md) e `src/infra/sample/` come esempi pubblici;
 3. leggere `grading.md` per capire cosa viene valutato;
 4. leggere `approach.md` per capire la struttura generale della prova.
 

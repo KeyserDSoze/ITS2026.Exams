@@ -1,0 +1,3 @@
+Domanda 2: descrivi come controlleresti un POST che non salva o un errore HTTP 400 e come risolveresti il problema.
+
+RISPOSTA:

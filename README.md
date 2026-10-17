@@ -7,6 +7,7 @@ Framework pubblico di riferimento per la preparazione, verifica automatica e col
 ## Cosa contiene
 
 - un caso Development fittizio completo di traccia, skeleton candidato, soluzione, grader e test;
+- due ulteriori esercitazioni pubbliche **.NET 10**: una guidata con soluzione e una autonoma senza soluzione;
 - un caso Infrastructure fittizio Windows/IIS completo di traccia, soluzione, grader, fixture simulate e integration test reale;
 - `tools/CORREZIONE.cmd` e `tools/grade-exam.ps1` per il discovery automatico tramite `.exam-id`;
 - supporto a grader privati esterni in `private-graders/<EXAM-ID>/grade.ps1`, senza pubblicare gli esami reali;
@@ -24,6 +25,8 @@ Framework pubblico di riferimento per la preparazione, verifica automatica e col
 docs/
 src/
   dev/sample/
+  dev/practice/books/
+  dev/practice/tickets/
   infra/sample/
 tools/
   CORREZIONE.cmd
@@ -80,3 +83,7 @@ Consulta:
 - `docs/operations.md` per l'uso operativo;
 - `docs/public-boundary.md` per cosa può e non può essere pubblicato;
 - `docs/private-graders.md` per collegare gli esami reali senza committarli.
+
+## Esercitazioni Development .NET 10
+
+[Lezione guidata Catalogo libri](src/dev/practice/books/LEZIONE-GUIDATA.md) ([soluzione](src/dev/practice/books/solution/)) e [traccia autonoma Segnalazioni](src/dev/practice/tickets/candidate/README.md). Tutti i progetti DEV, incluso lo storico `DEV-SAMPLE`, hanno ora target `net10.0`. I due casi sono fittizi e pubblici, non tracce d'esame reali. La pipeline genera anche i rispettivi ZIP candidati.

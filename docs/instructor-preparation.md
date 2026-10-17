@@ -8,7 +8,7 @@ La prova tecnica viene valutata su 20 punti. Le due risposte aperte valgono comp
 
 Esistono due famiglie di prova:
 
-- Development: piccola web application .NET 8 con Minimal API e frontend HTML/CSS/JavaScript;
+- Development: piccola web application .NET 10 con Minimal API e frontend HTML/CSS/JavaScript;
 - Infrastructure: macchina Windows Server con IIS e configurazioni di sistema.
 
 I casi presenti in `src/dev/sample` e `src/infra/sample` sono esempi didattici pubblici e non coincidono con gli esami finali.
@@ -19,7 +19,7 @@ Gli studenti devono saper lavorare su un progetto già predisposto, non costruir
 
 Durante le lezioni è sufficiente esercitarsi su:
 
-- leggere la struttura di un progetto .NET 8 semplice;
+- leggere la struttura di un progetto .NET 10 semplice;
 - capire il ruolo di `Program.cs` e `wwwroot`;
 - completare piccoli TODO nel backend e nel frontend;
 - creare e comprendere endpoint GET e POST;
@@ -121,3 +121,6 @@ Prima di terminare il percorso preparatorio verificare che ogni studente sappia:
 - scrivere due risposte tecniche comprensibili in file TXT.
 
 Se questi punti sono coperti, la preparazione è allineata alla struttura dell'esame senza necessità di conoscere le tracce reali.
+## Due esercitazioni DEV aggiuntive (.NET 10)
+
+In classe mostrare [Catalogo libri con guida e soluzione](../src/dev/practice/books/LEZIONE-GUIDATA.md); successivamente distribuire la sola [traccia autonoma Segnalazioni](../src/dev/practice/tickets/candidate/README.md). Sono esempi fittizi pubblici, non tracce finali.
