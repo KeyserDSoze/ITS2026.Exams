@@ -27,8 +27,11 @@ try {
   Add-Check 'Applicazione avviabile' 2 $started
   if(-not $started){throw 'Applicazione non raggiungibile'}
   try {
-    $initial = @(Invoke-RestMethod -Uri "$baseUrl$ApiPath" -Method Get -TimeoutSec 5)
-    $getOk = @($initial | Where-Object {$_.PSObject.Properties.Name -contains $JsonProperty}).Count -gt 0
+    $getResponse = Invoke-WebRequest -Uri "$baseUrl$ApiPath" -Method Get -UseBasicParsing -TimeoutSec 5
+    $null = $getResponse.Content | ConvertFrom-Json
+    $getOk = ($getResponse.StatusCode -eq 200) -and
+             $getResponse.Content.TrimStart().StartsWith('[') -and
+             ($getResponse.Content -match ('"' + [regex]::Escape($JsonProperty) + '"\s*:'))
     Add-Check 'GET con JSON' 3 $getOk
   } catch {Add-Check 'GET con JSON' 3 $false $_.Exception.Message}
   $newValue = "CI-$([guid]::NewGuid().ToString('N').Substring(0,8))"
