@@ -30,10 +30,11 @@ Get-ChildItem -Path (Join-Path $repoRoot 'tools') -File |
     Copy-Item -Destination (Join-Path $usb 'tools') -Force
 Copy-Item -Path (Join-Path $repoRoot 'src/dev/sample/grader/*') -Destination (Join-Path $usb 'src/dev/sample/grader') -Force
 Copy-Item -Path (Join-Path $repoRoot 'src/infra/sample/grader/*') -Destination (Join-Path $usb 'src/infra/sample/grader') -Force
-foreach ($case in @('books','tickets')) {
-    $dest=Join-Path $usb "src/dev/practice/$case/grader"
+$practiceRoot=Join-Path $repoRoot 'src/dev/practice'
+foreach ($folder in @(Get-ChildItem $practiceRoot -Directory | Where-Object { $_.Name -match '^[0-9]{3}_' })) {
+    $dest=Join-Path $usb "src/dev/practice/$($folder.Name)/grader"
     New-Item -ItemType Directory -Force -Path $dest | Out-Null
-    Copy-Item -Path (Join-Path $repoRoot "src/dev/practice/$case/grader/*") -Destination $dest -Force
+    Copy-Item -Path (Join-Path $folder.FullName 'grader/*') -Destination $dest -Force
 }
 Copy-Item -Path (Join-Path $privateRoot '*') -Destination (Join-Path $usb 'private-graders') -Recurse -Force
 

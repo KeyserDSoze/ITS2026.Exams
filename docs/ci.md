@@ -64,6 +64,6 @@ La pipeline è verde solo se:
 - gli ZIP finali vengono creati con successo.
 
 Prima della giornata d'esame resta comunque obbligatorio uno smoke test sulla VM VirtualBox definitiva.
-## Esercitazioni DEV aggiuntive
+## Dodici esercitazioni DEV .NET 10
 
-La CI prova la soluzione guidata `DEV-BOOKS-SAMPLE` (20/20), i due skeleton incompleti (<20/20), verifica i nuovi pacchetti ZIP e include i loro grader nella chiavetta pubblica. La soluzione della traccia autonoma non viene pubblicata.
+La CI esegue per ogni caso un test positivo sulla soluzione (20/20) e un test negativo sullo skeleton candidato (<20/20). Verifica inoltre i 12 nuovi ZIP e i grader del correttore USB. I test HTTP coprono GET, POST, input invalido, persistenza in memoria e, dove richiesto, DELETE, PATCH e PUT. La parte HTML/CSS viene controllata staticamente e richiede anche revisione visiva.

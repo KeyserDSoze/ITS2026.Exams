@@ -1,3 +1,0 @@
-Domanda 2: descrivi come diagnosticheresti un HTTP 400 o una lista che non si aggiorna usando DevTools e test HTTP.
-
-RISPOSTA:

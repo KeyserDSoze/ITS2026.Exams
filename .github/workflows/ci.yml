@@ -46,7 +46,7 @@ jobs:
       - name: Run behavioral DEV grader tests
         shell: pwsh
         run: ./src/dev/sample/tests/test-dev-grader.ps1
-      - name: Test .NET 10 practice cases
+      - name: Test twelve .NET 10 practice cases
         shell: pwsh
         run: ./src/dev/practice/tests/test-practice-grader.ps1
 
@@ -99,7 +99,8 @@ jobs:
       - name: Verify generated ZIPs and required files
         shell: powershell
         run: |
-          $expected = @('DEV-SAMPLE-CANDIDATO.zip','DEV-BOOKS-SAMPLE-CANDIDATO.zip','DEV-TICKETS-SAMPLE-CANDIDATO.zip','INFRA-SAMPLE-CANDIDATO.zip','USB-CORRETTORE.zip')
+          $expected = @('DEV-SAMPLE-CANDIDATO.zip','INFRA-SAMPLE-CANDIDATO.zip','USB-CORRETTORE.zip') +
+                      @(1..12 | ForEach-Object { 'DEV-{0:D3}-SAMPLE-CANDIDATO.zip' -f $_ })
           foreach ($name in $expected) {
             $path = Join-Path 'dist' $name
             if (-not (Test-Path $path)) { throw "Missing package: $name" }
@@ -119,17 +120,22 @@ jobs:
 
           if (-not (Test-Path (Join-Path $dev '.exam-id'))) { throw 'DEV package lost .exam-id marker.' }
           if (-not (Test-Path (Join-Path $infra '.exam-id'))) { throw 'INFRA package lost .exam-id marker.' }
-          foreach ($case in @('BOOKS','TICKETS')) {
-            $target = Join-Path $verifyRoot $case
-            Expand-Archive "dist/DEV-$case-SAMPLE-CANDIDATO.zip" $target
-            if (-not (Test-Path (Join-Path $target '.exam-id'))) { throw "Missing training marker: $case" }
+          foreach ($number in 1..12) {
+            $id='DEV-{0:D3}-SAMPLE' -f $number
+            $target=Join-Path $verifyRoot $id
+            Expand-Archive "dist/$id-CANDIDATO.zip" $target
+            if (-not (Test-Path (Join-Path $target '.exam-id'))) { throw "Missing training marker: $id" }
+            $marker=(Get-Content -Raw (Join-Path $target '.exam-id')).Trim()
+            if (-not $marker.StartsWith("$id|")) { throw "Wrong marker in $id" }
           }
           foreach ($required in @('CORREZIONE.cmd','grade-exam.ps1','grade-questions.ps1','PREPARE-EXAM.ps1','grade-batch.ps1')) {
             if (-not (Test-Path (Join-Path $usb "tools/$required"))) { throw "USB package missing $required." }
           }
           if (-not (Test-Path (Join-Path $usb 'src/dev/sample/grader/grade-dev.ps1'))) { throw 'USB package missing DEV grader.' }
-          foreach ($case in @('books','tickets')) {
-            if (-not (Test-Path (Join-Path $usb "src/dev/practice/$case/grader/grade.ps1"))) { throw "Missing $case grader in USB." }
+          $folders=@(Get-ChildItem 'src/dev/practice' -Directory | Where-Object { $_.Name -match '^[0-9]{3}_' })
+          if ($folders.Count -ne 12) { throw 'Expected twelve training folders.' }
+          foreach ($folder in $folders) {
+            if (-not (Test-Path (Join-Path $usb "src/dev/practice/$($folder.Name)/grader/grade.ps1"))) { throw "Missing $($folder.Name) grader in USB." }
           }
           if (-not (Test-Path (Join-Path $usb 'tools/grade-dev-practice.ps1'))) { throw 'Missing common DEV grader in USB.' }
           if (-not (Test-Path (Join-Path $usb 'src/infra/sample/grader/grade-infra.ps1'))) { throw 'USB package missing INFRA grader.' }

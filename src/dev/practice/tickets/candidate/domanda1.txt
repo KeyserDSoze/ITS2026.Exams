@@ -1,3 +1,0 @@
-Domanda 1: spiega il ruolo di Program.cs, index.html, app.js e della risposta JSON nella web app.
-
-RISPOSTA:

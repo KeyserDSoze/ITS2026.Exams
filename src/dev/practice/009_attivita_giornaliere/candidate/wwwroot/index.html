@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Attività giornaliere — esercitazione .NET 10</title>
+  <link rel="stylesheet" href="style.css">
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <main>
+    <h1>Attività giornaliere</h1>
+    <!-- TODO HTML: aggiungere <p id="helper" class="helper"> con un aiuto all'utente. -->
+    <form id="entry-form">
+      <label for="name">Name<input id="name" name="name" required></label>
+
+      <button type="submit">Aggiungi</button>
+    </form>
+
+    <p id="message" role="status" aria-live="polite"></p>
+    <ul id="entries"></ul>
+  </main>
+</body>
+</html>

@@ -121,6 +121,6 @@ Prima di terminare il percorso preparatorio verificare che ogni studente sappia:
 - scrivere due risposte tecniche comprensibili in file TXT.
 
 Se questi punti sono coperti, la preparazione è allineata alla struttura dell'esame senza necessità di conoscere le tracce reali.
-## Due esercitazioni DEV aggiuntive (.NET 10)
+## Percorso DEV progressivo (.NET 10)
 
-In classe mostrare [Catalogo libri con guida e soluzione](../src/dev/practice/books/LEZIONE-GUIDATA.md); successivamente distribuire la sola [traccia autonoma Segnalazioni](../src/dev/practice/tickets/candidate/README.md). Sono esempi fittizi pubblici, non tracce finali.
+Usare le [12 prove numerate](../src/dev/practice/README.md), dalla GET/POST fino a DELETE/PATCH/PUT e piccoli interventi HTML/CSS. Ognuna ha la sua guida docente e soluzione, conservate separatamente dai file da distribuire. Si tratta esclusivamente di esempi fittizi pubblici, non degli esami finali.

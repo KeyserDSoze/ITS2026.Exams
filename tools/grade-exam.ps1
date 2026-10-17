@@ -93,18 +93,63 @@ switch ($id) {
         $grader = Join-Path $repoRoot 'src/dev/sample/grader/grade-dev.ps1'
     }
     'DEV-BOOKS-SAMPLE' {
-        $grader = Join-Path $repoRoot 'src/dev/practice/books/grader/grade.ps1'
+        $grader = Join-Path $repoRoot 'src/dev/practice/001_catalogo_libri/grader/grade.ps1'
     }
     'DEV-TICKETS-SAMPLE' {
-        $grader = Join-Path $repoRoot 'src/dev/practice/tickets/grader/grade.ps1'
+        $grader = Join-Path $repoRoot 'src/dev/practice/002_registro_segnalazioni/grader/grade.ps1'
     }
     'INFRA-SAMPLE' {
         $grader = Join-Path $repoRoot 'src/infra/sample/grader/grade-infra.ps1'
     }
     default {
-        $grader = Join-Path (Join-Path $PrivateGraderRoot $id) 'grade.ps1'
-        if (-not (Test-Path $grader -PathType Leaf)) {
-            throw "Exam ID non supportato dal framework pubblico e grader privato non trovato: $id"
+        if ($id -match '^DEV-([0-9]{3})-SAMPLE
+}
+
+$technical = (& $grader -ExamRoot $root -Json | Select-Object -Last 1) | ConvertFrom-Json
+if ([int]$technical.maxScore -ne 20) { throw "Il grader tecnico $id deve avere maxScore=20." }
+
+$questionGrader = Join-Path $PSScriptRoot 'grade-questions.ps1'
+$questions = (& $questionGrader -ExamRoot $root -Json | Select-Object -Last 1) | ConvertFrom-Json
+
+$result = [pscustomobject]@{
+    examId=$id
+    examRoot=$root
+    technicalScore=[int]$technical.score
+    technicalMax=20
+    questionsScore=[int]$questions.totale
+    questionsMax=10
+    total=([int]$technical.score + [int]$questions.totale)
+    totalMax=30
+    technicalChecks=$technical.checks
+}
+
+New-Item -ItemType Directory -Force -Path $ReportDirectory | Out-Null
+$stamp = Get-Date -Format 'yyyyMMdd-HHmmss'
+$jsonFile = Join-Path $ReportDirectory "RISULTATO-$id-$stamp.json"
+$htmlFile = Join-Path $ReportDirectory "RISULTATO-$id-$stamp.html"
+$result | ConvertTo-Json -Depth 6 | Set-Content -Encoding UTF8 $jsonFile
+Write-HtmlReport -Result $result -Path $htmlFile
+
+if ($Json) { $result | ConvertTo-Json -Depth 6 -Compress }
+else {
+    Write-Host "Esame: $id"
+    Write-Host "Tecnico: $($result.technicalScore)/20"
+    Write-Host "Domande: $($result.questionsScore)/10"
+    Write-Host "TOTALE: $($result.total)/30"
+    Write-Host "Report JSON: $jsonFile"
+    Write-Host "Report HTML: $htmlFile"
+}
+) {
+            $number=$Matches[1]
+            $exercise=@(Get-ChildItem (Join-Path $repoRoot 'src/dev/practice') -Directory |
+                Where-Object { $_.Name -like "$number*" })
+            if ($exercise.Count -ne 1) { throw "Esercitazione non trovata per $id" }
+            $grader = Join-Path $exercise[0].FullName 'grader/grade.ps1'
+        } else {
+            $grader = Join-Path (Join-Path $PrivateGraderRoot $id) 'grade.ps1'
+            if (-not (Test-Path $grader -PathType Leaf)) {
+                throw "Exam ID non supportato dal framework pubblico e grader privato non trovato: $id"
+            }
         }
     }
 }

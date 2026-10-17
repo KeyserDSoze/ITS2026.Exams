@@ -1,0 +1,3 @@
+Domanda 1: descrivi come la richiesta HTTP viaggia dal form HTML all'endpoint ASP.NET Core Minimal API e come la risposta JSON aggiorna il DOM.
+
+RISPOSTA:

@@ -1,0 +1,3 @@
+param([Parameter(Mandatory=$true)][string]$ExamRoot,[switch]$Json)
+$repoRoot = (Resolve-Path (Join-Path $PSScriptRoot '../../../../..')).Path
+& (Join-Path $repoRoot 'tools/grade-dev-practice.ps1') -ExamRoot $ExamRoot -ExamId 'DEV-004-SAMPLE' -ApiPath '/api/contacts' -JsonProperty 'name' -ExtraProperty 'email' -RequireUi -Json:$Json

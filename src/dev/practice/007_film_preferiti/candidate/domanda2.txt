@@ -1,0 +1,3 @@
+Domanda 2: descrivi come individueresti e risolveresti un errore API (400, 404 o 501) o un elemento non aggiornato, usando terminale e DevTools.
+
+RISPOSTA:
