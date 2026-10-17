@@ -102,44 +102,7 @@ switch ($id) {
         $grader = Join-Path $repoRoot 'src/infra/sample/grader/grade-infra.ps1'
     }
     default {
-        if ($id -match '^DEV-([0-9]{3})-SAMPLE
-}
-
-$technical = (& $grader -ExamRoot $root -Json | Select-Object -Last 1) | ConvertFrom-Json
-if ([int]$technical.maxScore -ne 20) { throw "Il grader tecnico $id deve avere maxScore=20." }
-
-$questionGrader = Join-Path $PSScriptRoot 'grade-questions.ps1'
-$questions = (& $questionGrader -ExamRoot $root -Json | Select-Object -Last 1) | ConvertFrom-Json
-
-$result = [pscustomobject]@{
-    examId=$id
-    examRoot=$root
-    technicalScore=[int]$technical.score
-    technicalMax=20
-    questionsScore=[int]$questions.totale
-    questionsMax=10
-    total=([int]$technical.score + [int]$questions.totale)
-    totalMax=30
-    technicalChecks=$technical.checks
-}
-
-New-Item -ItemType Directory -Force -Path $ReportDirectory | Out-Null
-$stamp = Get-Date -Format 'yyyyMMdd-HHmmss'
-$jsonFile = Join-Path $ReportDirectory "RISULTATO-$id-$stamp.json"
-$htmlFile = Join-Path $ReportDirectory "RISULTATO-$id-$stamp.html"
-$result | ConvertTo-Json -Depth 6 | Set-Content -Encoding UTF8 $jsonFile
-Write-HtmlReport -Result $result -Path $htmlFile
-
-if ($Json) { $result | ConvertTo-Json -Depth 6 -Compress }
-else {
-    Write-Host "Esame: $id"
-    Write-Host "Tecnico: $($result.technicalScore)/20"
-    Write-Host "Domande: $($result.questionsScore)/10"
-    Write-Host "TOTALE: $($result.total)/30"
-    Write-Host "Report JSON: $jsonFile"
-    Write-Host "Report HTML: $htmlFile"
-}
-) {
+        if ($id -match '^DEV-([0-9]{3})-SAMPLE$') {
             $number=$Matches[1]
             $exercise=@(Get-ChildItem (Join-Path $repoRoot 'src/dev/practice') -Directory |
                 Where-Object { $_.Name -like "$number*" })
