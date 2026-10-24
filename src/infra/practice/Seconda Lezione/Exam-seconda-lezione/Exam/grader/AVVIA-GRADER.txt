@@ -1,0 +1,8 @@
+AVVIO GRADER - FACSIMILE INFRASTRUCTURE (20 PUNTI)
+
+1. Lavora nella VM Windows Server, non sul PC host.
+2. Estrai il pacchetto: il percorso consigliato e' C:\Exam.
+3. Apri Windows PowerShell 5.1 a 64 bit come amministratore.
+4. Copia e incolla questa riga nella console:
+
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File "C:\Exam\grader\grade-infra.ps1" -ExamRoot "C:\Exam"

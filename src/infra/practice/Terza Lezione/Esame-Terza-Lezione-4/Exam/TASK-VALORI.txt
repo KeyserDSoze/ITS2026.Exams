@@ -1,0 +1,24 @@
+ATTIVITA: SegreteriaBackup
+Percorso nella libreria: radice (\)
+Account: SYSTEM
+Esegui con i privilegi piu elevati: si
+Attivita abilitata: si
+
+TRIGGER
+Un solo trigger giornaliero, ogni 1 giorno alle 18:00 (ora della VM).
+Data iniziale: oggi o precedente. Trigger abilitato.
+Nessuna scadenza, ripetizione aggiuntiva o ritardo casuale.
+
+AZIONE
+Una sola azione: Avvio programma.
+
+Programma/script:
+%SystemRoot%\System32\cmd.exe
+
+Aggiungi argomenti:
+/c copy /Y "C:\LabWeb\Segreteria\index.html" "C:\SegreteriaLab\Dati\homepage-backup.html"
+
+Avvia in: lasciare vuoto.
+
+FILE ATTESO
+C:\SegreteriaLab\Dati\homepage-backup.html

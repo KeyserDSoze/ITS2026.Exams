@@ -1,0 +1,27 @@
+{
+    "schemaVersion":  1,
+    "examId":  "INFRA-FACSIMILE-03|ITS-SERVICEDESK-BACKUP-2026",
+    "title":  "Esame-Seconda-Lezione-2 - Sportello IT",
+    "maxScore":  20,
+    "siteName":  "ITS-ServiceDesk",
+    "physicalPath":  "C:\\LabWeb\\ServiceDesk",
+    "port":  8107,
+    "bindingIPAddress":  "*",
+    "bindingHostName":  "",
+    "firewallRule":  "ITS ServiceDesk HTTP 8107",
+    "localUser":  "desk_operator",
+    "localGroup":  "DeskOperators",
+    "dataFolder":  "C:\\ServiceDesk\\Dati",
+    "expectedText":  "SERVICE DESK ITS - OK",
+    "scheduledTask":  "ServiceDeskBackup",
+    "task":  {
+                 "path":  "\\",
+                 "dailyAt":  "17:15",
+                 "daysInterval":  1,
+                 "principalSid":  "S-1-5-18",
+                 "runLevel":  "HighestAvailable",
+                 "execute":  "%SystemRoot%\\System32\\cmd.exe",
+                 "arguments":  "/c copy /Y \"C:\\LabWeb\\ServiceDesk\\index.html\" \"C:\\ServiceDesk\\Dati\\homepage-backup.html\"",
+                 "backupFile":  "C:\\ServiceDesk\\Dati\\homepage-backup.html"
+             }
+}

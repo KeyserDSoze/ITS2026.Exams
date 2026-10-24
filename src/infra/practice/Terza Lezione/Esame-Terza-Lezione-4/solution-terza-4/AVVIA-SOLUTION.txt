@@ -1,0 +1,11 @@
+Copiare nella VM la cartella solution-terza-4 in C:\.
+Verificare che esistano C:\solution-terza-4\solution-docente.ps1 e C:\Exam\exam-config.json.
+Aprire Windows PowerShell 5.1 x64 come amministratore ed eseguire:
+
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File "C:\solution-terza-4\solution-docente.ps1" -ExamRoot "C:\Exam"
+
+Il percorso completo funziona da qualsiasi cartella.
+Lo script configura il laboratorio, esegue il backup e lancia il grader su 20.
+La password del nuovo utente viene generata e mostrata in console.
+Se Windows richiede un riavvio, riavviare e rilanciare lo stesso comando.
+Le risposte alle domande e la griglia punti sono in RISPOSTE-DOMANDE.md.

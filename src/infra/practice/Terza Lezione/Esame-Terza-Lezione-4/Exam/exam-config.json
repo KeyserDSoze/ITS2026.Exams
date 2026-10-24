@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "examId": "INFRA-FACSIMILE-08|ITS-SEGRETERIA-BASE-2026",
+  "title": "Esame-Terza-Lezione-4 - Portale Segreteria",
+  "maxScore": 20,
+  "siteName": "ITS-SegreteriaLab",
+  "physicalPath": "C:\\LabWeb\\Segreteria",
+  "port": 8157,
+  "bindingIPAddress": "*",
+  "bindingHostName": "",
+  "firewallRule": "ITS Segreteria HTTP 8157",
+  "localUser": "segr_operator",
+  "localGroup": "SegreteriaOperators",
+  "dataFolder": "C:\\SegreteriaLab\\Dati",
+  "expectedText": "SEGRETERIA ITS - ONLINE",
+  "scheduledTask": "SegreteriaBackup",
+  "task": {
+    "path": "\\",
+    "dailyAt": "18:00",
+    "daysInterval": 1,
+    "principalSid": "S-1-5-18",
+    "runLevel": "HighestAvailable",
+    "execute": "%SystemRoot%\\System32\\cmd.exe",
+    "arguments": "/c copy /Y \"C:\\LabWeb\\Segreteria\\index.html\" \"C:\\SegreteriaLab\\Dati\\homepage-backup.html\"",
+    "backupFile": "C:\\SegreteriaLab\\Dati\\homepage-backup.html"
+  }
+}

@@ -1,0 +1,4 @@
+Domanda 2: che differenza c'e tra un utente locale e un gruppo locale? Perche nell'esercizio il permesso Modify viene assegnato al gruppo?
+
+RISPOSTA:
+

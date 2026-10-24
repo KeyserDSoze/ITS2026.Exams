@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "examId": "INFRA-FACSIMILE-04|ITS-PROGETTI-BACKUP-2026",
+  "title": "Esame-Seconda-Lezione-3 - Portale Progetti",
+  "maxScore": 20,
+  "siteName": "ITS-ProgettiLab",
+  "applicationPool": "ProgettiLabPool",
+  "physicalPath": "C:\\LabApps\\ProgettiWeb",
+  "port": 8113,
+  "bindingIPAddress": "*",
+  "bindingHostName": "",
+  "firewallRule": "ITS Progetti HTTP 8113",
+  "localUser": "proj_editor",
+  "localGroup": "ProjectEditors",
+  "dataFolder": "C:\\InfraOps\\Dati",
+  "expectedText": "PROGETTI ITS - ONLINE",
+  "scheduledTask": "ProgettiBackup",
+  "task": {
+    "path": "\\",
+    "dailyAt": "19:40",
+    "daysInterval": 1,
+    "principalSid": "S-1-5-18",
+    "runLevel": "HighestAvailable",
+    "execute": "%SystemRoot%\\System32\\cmd.exe",
+    "arguments": "/c copy /Y \"C:\\LabApps\\ProgettiWeb\\index.html\" \"C:\\InfraOps\\Dati\\homepage-backup.html\"",
+    "backupFile": "C:\\InfraOps\\Dati\\homepage-backup.html"
+  },
+  "readerUser": "proj_reader",
+  "readerGroup": "ProjectReaders"
+}

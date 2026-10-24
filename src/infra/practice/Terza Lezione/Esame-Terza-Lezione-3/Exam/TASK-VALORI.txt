@@ -1,0 +1,23 @@
+FormazioneBackup
+Programma/script:
+%SystemRoot%\System32\cmd.exe
+
+Aggiungi argomenti:
+/c copy /Y "C:\LabWeb\Formazione\index.html" "C:\TrainingLab\Dati\homepage-backup.html"
+
+Avvia in: lasciare vuoto
+Orario giornaliero: 18:20
+File atteso: C:\TrainingLab\Dati\homepage-backup.html
+
+FormazioneReport
+Programma/script:
+%SystemRoot%\System32\cmd.exe
+
+Aggiungi argomenti:
+/c echo FORMAZIONE REPORT OK>"C:\TrainingLab\Dati\report-giornaliero.txt"
+
+Avvia in: lasciare vuoto
+Orario giornaliero: 18:35
+File atteso: C:\TrainingLab\Dati\report-giornaliero.txt
+
+Per entrambi: SYSTEM, privilegi piu elevati, ogni giorno, task abilitato.

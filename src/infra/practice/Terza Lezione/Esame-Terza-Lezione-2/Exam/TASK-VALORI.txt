@@ -1,0 +1,8 @@
+PROGRAMMA / SCRIPT
+%SystemRoot%\System32\cmd.exe
+
+ARGOMENTI
+/c copy /Y "C:\LabWeb\Biblioteca\index.html" "C:\LibraryLab\Dati\catalogo-backup.html"
+
+FILE DI BACKUP
+C:\LibraryLab\Dati\catalogo-backup.html

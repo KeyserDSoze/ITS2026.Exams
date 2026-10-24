@@ -1,0 +1,4 @@
+Domanda 1: che differenza c'e tra un utente locale e un gruppo locale? Perche e utile assegnare i permessi a un gruppo?
+
+RISPOSTA:
+

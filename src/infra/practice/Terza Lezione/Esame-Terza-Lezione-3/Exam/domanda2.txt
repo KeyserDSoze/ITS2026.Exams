@@ -1,0 +1,4 @@
+Domanda 2: la pagina contatti.html non si apre nel browser. Indica due controlli semplici che faresti per trovare e risolvere il problema.
+
+RISPOSTA:
+

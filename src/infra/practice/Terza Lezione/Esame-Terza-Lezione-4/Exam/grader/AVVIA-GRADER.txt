@@ -1,0 +1,7 @@
+Nella VM estrarre il pacchetto in modo che esista C:\Exam\exam-config.json.
+Aprire Windows PowerShell 5.1 x64 come amministratore ed eseguire:
+
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File "C:\Exam\grader\grade-infra.ps1" -ExamRoot "C:\Exam"
+
+Il grader mostra PASS/FAIL, punteggio tecnico su 20 e numero di esecuzione persistente.
+Le due domande aperte sono corrette manualmente dal docente.

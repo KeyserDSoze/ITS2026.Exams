@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "examId": "INFRA-FACSIMILE-07|ITS-FORMAZIONE-RIEPILOGO-2026",
+  "title": "Esame-Terza-Lezione-3 - Portale Formazione",
+  "maxScore": 20,
+  "siteName": "ITS-FormazioneLab",
+  "applicationPool": "FormazioneLabPool",
+  "physicalPath": "C:\\LabWeb\\Formazione",
+  "port": 8149,
+  "bindingIPAddress": "*",
+  "bindingHostName": "",
+  "firewallRule": "ITS Formazione HTTP 8149",
+  "localUser": "train_editor",
+  "localGroup": "TrainingEditors",
+  "readerUser": "train_reader",
+  "readerGroup": "TrainingReaders",
+  "dataFolder": "C:\\TrainingLab\\Dati",
+  "expectedText": "FORMAZIONE ITS - ONLINE",
+  "scheduledTask": "FormazioneBackup",
+  "task": {
+    "path": "\\",
+    "dailyAt": "18:20",
+    "daysInterval": 1,
+    "principalSid": "S-1-5-18",
+    "runLevel": "HighestAvailable",
+    "execute": "%SystemRoot%\\System32\\cmd.exe",
+    "arguments": "/c copy /Y \"C:\\LabWeb\\Formazione\\index.html\" \"C:\\TrainingLab\\Dati\\homepage-backup.html\"",
+    "backupFile": "C:\\TrainingLab\\Dati\\homepage-backup.html"
+  },
+  "logging": {
+    "centralMode": "Site",
+    "enabled": true,
+    "format": "W3C",
+    "directory": "C:\\TrainingLab\\LogIIS",
+    "period": "Daily",
+    "destination": "File"
+  },
+  "virtualDirectory": {
+    "alias": "materiali",
+    "physicalPath": "C:\\TrainingLab\\Materiali",
+    "indexFile": "index.html",
+    "sourceFile": "materiali\\index.html",
+    "expectedText": "MATERIALI FORMAZIONE - OK"
+  },
+  "extraPage": {
+    "fileName": "contatti.html",
+    "expectedText": "CONTATTI FORMAZIONE - OK"
+  },
+  "directFolder": "C:\\TrainingLab\\Personale",
+  "reportTask": {
+    "name": "FormazioneReport",
+    "path": "\\",
+    "dailyAt": "18:35",
+    "daysInterval": 1,
+    "principalSid": "S-1-5-18",
+    "runLevel": "HighestAvailable",
+    "execute": "%SystemRoot%\\System32\\cmd.exe",
+    "arguments": "/c echo FORMAZIONE REPORT OK>\"C:\\TrainingLab\\Dati\\report-giornaliero.txt\"",
+    "reportFile": "C:\\TrainingLab\\Dati\\report-giornaliero.txt",
+    "expectedText": "FORMAZIONE REPORT OK"
+  }
+}

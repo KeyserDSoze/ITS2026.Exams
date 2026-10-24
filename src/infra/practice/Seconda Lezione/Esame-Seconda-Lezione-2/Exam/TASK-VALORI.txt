@@ -1,0 +1,5 @@
+PROGRAMMA / SCRIPT
+%SystemRoot%\System32\cmd.exe
+
+ARGOMENTI
+/c copy /Y "C:\LabWeb\ServiceDesk\index.html" "C:\ServiceDesk\Dati\homepage-backup.html"

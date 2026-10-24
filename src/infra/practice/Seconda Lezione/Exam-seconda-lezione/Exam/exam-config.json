@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "examId": "INFRA-FACSIMILE-02|ITS-PORTALE-GRUPPI-2026",
+  "title": "Infrastructure - Portale ITS e gestione accessi tramite gruppo",
+  "maxScore": 20,
+  "siteName": "ITS-PortalLab",
+  "physicalPath": "C:\\InfraLab\\PortaleWeb",
+  "port": 8093,
+  "bindingIPAddress": "*",
+  "bindingHostName": "",
+  "firewallRule": "ITS Portal HTTP 8093",
+  "localUser": "portal_operator",
+  "localGroup": "PortalEditors",
+  "dataFolder": "C:\\InfraData\\Portale",
+  "expectedText": "PORTALE ITS - LAB OK",
+  "scheduledTask": "PortaleDailyReport",
+  "task": {
+    "path": "\\",
+    "dailyAt": "18:30",
+    "daysInterval": 1,
+    "principalSid": "S-1-5-18",
+    "runLevel": "HighestAvailable",
+    "execute": "%SystemRoot%\\System32\\cmd.exe",
+    "arguments": "/c echo PORTALE REPORT OK>\"C:\\InfraData\\Portale\\daily-report.txt\""
+  }
+}

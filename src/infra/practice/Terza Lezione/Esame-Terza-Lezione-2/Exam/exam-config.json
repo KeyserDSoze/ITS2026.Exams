@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 1,
+  "examId": "INFRA-FACSIMILE-06|ITS-BIBLIOTECA-LOG-BACKUP-2026",
+  "title": "Esame-Terza-Lezione-2 - Biblioteca digitale",
+  "maxScore": 20,
+  "siteName": "ITS-BibliotecaLab",
+  "applicationPool": "BibliotecaLabPool",
+  "physicalPath": "C:\\LabWeb\\Biblioteca",
+  "port": 8137,
+  "bindingIPAddress": "*",
+  "bindingHostName": "",
+  "firewallRule": "ITS Biblioteca HTTP 8137",
+  "localUser": "biblio_editor",
+  "localGroup": "LibraryEditors",
+  "readerUser": "biblio_reader",
+  "readerGroup": "LibraryReaders",
+  "dataFolder": "C:\\LibraryLab\\Dati",
+  "expectedText": "BIBLIOTECA ITS - ONLINE",
+  "scheduledTask": "BibliotecaBackup",
+  "task": {
+    "path": "\\",
+    "dailyAt": "17:35",
+    "daysInterval": 1,
+    "principalSid": "S-1-5-18",
+    "runLevel": "HighestAvailable",
+    "execute": "%SystemRoot%\\System32\\cmd.exe",
+    "arguments": "/c copy /Y \"C:\\LabWeb\\Biblioteca\\index.html\" \"C:\\LibraryLab\\Dati\\catalogo-backup.html\"",
+    "backupFile": "C:\\LibraryLab\\Dati\\catalogo-backup.html"
+  },
+  "logging": {
+    "centralMode": "Site",
+    "enabled": true,
+    "format": "W3C",
+    "directory": "C:\\LibraryLab\\LogIIS",
+    "period": "Daily",
+    "destination": "File"
+  },
+  "virtualDirectory": {
+    "alias": "catalogo",
+    "physicalPath": "C:\\LibraryLab\\Catalogo",
+    "indexFile": "index.html",
+    "sourceFile": "catalogo\\index.html",
+    "expectedText": "CATALOGO BIBLIOTECA - OK"
+  },
+  "extraPage": {
+    "fileName": "orari.html",
+    "expectedText": "ORARI BIBLIOTECA - OK"
+  }
+}

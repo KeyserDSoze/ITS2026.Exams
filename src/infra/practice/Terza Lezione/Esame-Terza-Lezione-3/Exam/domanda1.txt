@@ -1,0 +1,4 @@
+Domanda 1: che differenza c'e tra il permesso Modify e Read and Execute? Indica quale dei due permette di modificare un file e quale di consultarlo.
+
+RISPOSTA:
+

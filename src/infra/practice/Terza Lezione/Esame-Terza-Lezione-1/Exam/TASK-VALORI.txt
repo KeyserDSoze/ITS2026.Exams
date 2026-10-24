@@ -1,0 +1,8 @@
+PROGRAMMA / SCRIPT
+%SystemRoot%\System32\cmd.exe
+
+ARGOMENTI
+/c copy /Y "C:\LabWeb\Inventario\index.html" "C:\AssetLab\Dati\inventario-backup.html"
+
+FILE DI BACKUP
+C:\AssetLab\Dati\inventario-backup.html

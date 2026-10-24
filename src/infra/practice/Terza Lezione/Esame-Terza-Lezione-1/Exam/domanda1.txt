@@ -1,0 +1,4 @@
+Domanda 1: descrivi a cosa servono IIS, la cartella del sito, il binding/porta e il firewall e come collaborano per rendere raggiungibile il sito dell'esercizio.
+
+RISPOSTA:
+

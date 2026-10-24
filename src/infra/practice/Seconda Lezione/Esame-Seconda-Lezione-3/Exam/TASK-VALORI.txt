@@ -1,0 +1,8 @@
+PROGRAMMA / SCRIPT
+%SystemRoot%\System32\cmd.exe
+
+ARGOMENTI
+/c copy /Y "C:\LabApps\ProgettiWeb\index.html" "C:\InfraOps\Dati\homepage-backup.html"
+
+FILE DI BACKUP
+C:\InfraOps\Dati\homepage-backup.html

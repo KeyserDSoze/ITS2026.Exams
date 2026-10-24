@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "examId": "INFRA-FACSIMILE-05|ITS-INVENTARIO-LOG-BACKUP-2026",
+  "title": "Esame-Terza-Lezione-1 - Inventario IT",
+  "maxScore": 20,
+  "siteName": "ITS-InventarioLab",
+  "applicationPool": "InventarioLabPool",
+  "physicalPath": "C:\\LabWeb\\Inventario",
+  "port": 8121,
+  "bindingIPAddress": "*",
+  "bindingHostName": "",
+  "firewallRule": "ITS Inventario HTTP 8121",
+  "localUser": "asset_editor",
+  "localGroup": "AssetEditors",
+  "readerUser": "asset_reader",
+  "readerGroup": "AssetReaders",
+  "dataFolder": "C:\\AssetLab\\Dati",
+  "expectedText": "INVENTARIO ITS - ONLINE",
+  "scheduledTask": "InventarioBackup",
+  "task": {
+    "path": "\\",
+    "dailyAt": "18:10",
+    "daysInterval": 1,
+    "principalSid": "S-1-5-18",
+    "runLevel": "HighestAvailable",
+    "execute": "%SystemRoot%\\System32\\cmd.exe",
+    "arguments": "/c copy /Y \"C:\\LabWeb\\Inventario\\index.html\" \"C:\\AssetLab\\Dati\\inventario-backup.html\"",
+    "backupFile": "C:\\AssetLab\\Dati\\inventario-backup.html"
+  },
+  "logging": {
+    "centralMode": "Site",
+    "enabled": true,
+    "format": "W3C",
+    "directory": "C:\\AssetLab\\LogIIS",
+    "period": "Daily",
+    "destination": "File"
+  }
+}

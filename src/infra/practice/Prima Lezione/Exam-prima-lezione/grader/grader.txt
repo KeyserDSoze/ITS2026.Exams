@@ -1,0 +1,1 @@
+& "C:\Exam\grader\grade-infra.ps1" -ExamRoot "C:\Exam"

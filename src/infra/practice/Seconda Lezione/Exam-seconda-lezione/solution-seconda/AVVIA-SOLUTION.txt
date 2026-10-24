@@ -1,0 +1,2 @@
+
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File "C:\Exam\solution\solution-docente.ps1" -ExamRoot "C:\Exam"
